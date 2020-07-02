@@ -81,6 +81,9 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor, OnChang
     @Output('onGroupDeSelect')
     onGroupDeSelect: EventEmitter<any> = new EventEmitter<any>();
 
+    @Output('onClickDisabledItem')
+    onClickDisabledItem: EventEmitter<any> = new EventEmitter<any>();
+
     @ContentChild(Item, { static: false }) itemTempl: Item;
     @ContentChild(Badge, { static: false }) badgeTempl: Badge;
     @ContentChild(Search, { static: false }) searchTempl: Search;
@@ -148,6 +151,7 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor, OnChang
         searchAutofocus: true,
         lazyLoading: false,
         labelKey: 'itemName',
+        enabledKey: 'published',
         primaryKey: 'id',
         position: 'bottom',
         autoPosition: true,
@@ -156,8 +160,11 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor, OnChang
         addNewItemOnFilter: false,
         addNewButtonText: "Add",
         escapeToClose: true,
-        clearAll: true
-    }
+        clearAll: true,
+        closeOnClickOutside: true,
+        hiddenCheckboxClass: 'hidden-element',
+        lockItemClass: 'lock-item'
+    };
     randomSize: boolean = true;
     public parseError: boolean;
     public filteredList: any = [];
@@ -246,6 +253,7 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor, OnChang
     }
     onItemClick(item: any, index: number, evt: Event) {
         if (item.disabled) {
+          console.log('emit disabled item');
             return false;
         }
 
@@ -261,6 +269,8 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor, OnChang
                 if (limit) {
                     this.addSelected(item);
                     this.onSelect.emit(item);
+                } else {
+                  this.onClickDisabledItem.emit(item);
                 }
             }
             else {
@@ -430,7 +440,7 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor, OnChang
         this.onClose.emit(false);
     }
     public closeDropdownOnClickOut() {
-        if (this.isActive) {
+        if (this.isActive && this.settings.closeOnClickOutside) {
             if (this.searchInput && this.settings.lazyLoading) {
                 this.searchInput.nativeElement.value = "";
             }
@@ -523,7 +533,7 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor, OnChang
                                         });
                                     }
                                     this.updateGroupInfo(item);
-                
+
                                 }); */
 
                 this.ds.getFilteredData().forEach((el: any) => {

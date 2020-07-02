@@ -431,3 +431,13 @@ virtual-scroll {
   right: 30px;
   transform: translateY(-50%);
 }
+
+.hidden-element {
+  visibility: hidden !important;
+}
+
+.locked-item {
+  pointer-events: none;
+  background-color: #eeeeee;
+}
+

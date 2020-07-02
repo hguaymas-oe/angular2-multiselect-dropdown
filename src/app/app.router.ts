@@ -26,6 +26,7 @@ import {LazyLoadingRemoteDataExample } from './examples/lazyLoadingRemoteData';
 import {SearchFilterAddItemExample } from './examples/searchFilterAddNewItem';
 import { EventsExample } from './examples/events';
 import { UsingInListExample } from './examples/usingInList';
+import {ClickOutsideDisabled} from './examples/clickOutsideDisabled';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/basic', pathMatch: 'full' },
@@ -52,7 +53,8 @@ const appRoutes: Routes = [
   { path: 'lazyloadingRemoteData', component: LazyLoadingRemoteDataExample},
   { path: 'searchfilterAddNewItem', component: SearchFilterAddItemExample},
   { path: 'events', component: EventsExample},
-  { path: 'usingInList', component: UsingInListExample}
+  { path: 'usingInList', component: UsingInListExample},
+  { path: 'clickoutside', component: ClickOutsideDisabled}
 
 ];
 

@@ -19,7 +19,7 @@ import {LimitBadgesExample } from './examples/limitbadges';
 import { CustomPlaceholderExample } from './examples/customplaceholder';
 import { StylingExample } from './examples/styling';
 import { ng2Gist } from './examples/gist';
-import { TabViewModule } from 'primeng/primeng';
+import { TabViewModule } from 'primeng/tabview';
 import { UsingWithFormExample } from './examples/usingWithForms';
 import { UsingWithReactiveFormExample } from './examples/usingInReactForms';
 import { LazyLoadingExample } from './examples/lazyLoading';
@@ -41,6 +41,7 @@ import typescript from 'highlight.js/lib/languages/typescript';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CheckForUpdateService } from './check-for-update.service';
+import {ClickOutsideDisabled} from './examples/clickOutsideDisabled';
 export function hljsLanguages() {
   return [
     {name: 'typescript', func: typescript},
@@ -76,7 +77,8 @@ export function hljsLanguages() {
     LazyLoadingRemoteDataExample,
     SearchFilterAddItemExample,
     EventsExample,
-    UsingInListExample
+    UsingInListExample,
+    ClickOutsideDisabled
     ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

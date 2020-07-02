@@ -1,6 +1,6 @@
 <div class="cuppa-dropdown" (clickOutside)="closeDropdownOnClickOut()">
     <div class="selected-list" #selectedList>
-        <div class="c-btn" (click)="toggleDropdown($event)" [ngClass]="{'disabled': settings.disabled}" [attr.tabindex]="0">
+        <div class="c-btn" (click)="toggleDropdown($event)" [ngClass]="{true: settings.disabled}" [attr.tabindex]="0">
 
             <span *ngIf="selectedItems?.length == 0">{{settings.text}}</span>
             <span *ngIf="settings.singleSelection && !badgeTempl">
@@ -118,8 +118,8 @@
                 style="overflow: auto;">
                 <ul class="lazyContainer">
                     <li *ngFor="let item of data | listFilter:filter : settings.searchBy; let i = index;" (click)="onItemClick(item,i,$event)"
-                        class="pure-checkbox" [ngClass]="{'selected-item': isSelected(item) == true }">
-                        <input *ngIf="settings.showCheckbox" type="checkbox" [checked]="isSelected(item)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled"
+                        class="pure-checkbox" [ngClass]="{'selected-item': isSelected(item) == true, 'locked-item': item[settings.enabledKey] === false }">
+                        <input *ngIf="settings.showCheckbox" [ngClass]="{'hidden-element': item[settings.enabledKey] === false}" type="checkbox" [checked]="isSelected(item)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled || item[settings.enabledKey] === false"
                         />
                         <label>{{item[settings.labelKey]}}</label>
                     </li>
@@ -130,8 +130,8 @@
                 <ul virtualScroller #scroll [enableUnequalChildrenSizes]="randomSize" [items]="virtualdata" (vsStart)="onScrollEnd($event)"
                     (vsEnd)="onScrollEnd($event)" [ngStyle]="{'height': settings.maxHeight+'px'}" class="lazyContainer">
                     <li *ngFor="let item of scroll.viewPortItems; let i = index;" (click)="onItemClick(item,i,$event)" class="pure-checkbox"
-                        [ngClass]="{'selected-item': isSelected(item) == true }">
-                        <input *ngIf="settings.showCheckbox" type="checkbox" [checked]="isSelected(item)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled"
+                        [ngClass]="{'selected-item': isSelected(item) == true, 'locked-item': item[settings.enabledKey] === false }">
+                        <input *ngIf="settings.showCheckbox" [ngClass]="{'hidden-element': item[settings.enabledKey] === false}" type="checkbox" [checked]="isSelected(item)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled || item[settings.enabledKey] === false"
                         />
                         <label>{{item[settings.labelKey]}}</label>
                     </li>
@@ -141,8 +141,8 @@
                 style="overflow: auto;">
                 <ul class="lazyContainer">
                     <li *ngFor="let item of data | listFilter:filter : settings.searchBy; let i = index;" (click)="onItemClick(item,i,$event)"
-                        class="pure-checkbox" [ngClass]="{'selected-item': isSelected(item) == true }">
-                        <input *ngIf="settings.showCheckbox" type="checkbox" [checked]="isSelected(item)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled"
+                        class="pure-checkbox" [ngClass]="{'selected-item': isSelected(item) == true, 'locked-item': item[settings.enabledKey] === false }">
+                        <input *ngIf="settings.showCheckbox" type="checkbox" [checked]="isSelected(item)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled || item[settings.enabledKey] === false"
                         />
                         <label></label>
                         <c-templateRenderer [data]="itemTempl" [item]="item"></c-templateRenderer>
@@ -154,8 +154,8 @@
                 <ul virtualScroller #scroll2 [enableUnequalChildrenSizes]="randomSize" [items]="virtualdata" (vsStart)="onScrollEnd($event)"
                     (vsEnd)="onScrollEnd($event)" class="lazyContainer" [ngStyle]="{'height': settings.maxHeight+'px'}">
                     <li *ngFor="let item of scroll2.viewPortItems; let i = index;" (click)="onItemClick(item,i,$event)" class="pure-checkbox"
-                        [ngClass]="{'selected-item': isSelected(item) == true }">
-                        <input *ngIf="settings.showCheckbox" type="checkbox" [checked]="isSelected(item)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled"
+                        [ngClass]="{'selected-item': isSelected(item) == true, 'locked-item': item[settings.enabledKey] === false }">
+                        <input *ngIf="settings.showCheckbox" [ngClass]="{'hidden-element': item[settings.enabledKey] === false}" type="checkbox" [checked]="isSelected(item)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled || item[settings.enabledKey] === false"
                         />
                         <label></label>
                         <c-templateRenderer [data]="itemTempl" [item]="item"></c-templateRenderer>
@@ -167,16 +167,16 @@
                 <ul virtualScroller #scroll3 [enableUnequalChildrenSizes]="randomSize" [items]="virtualdata" (vsStart)="onScrollEnd($event)"
                     (vsEnd)="onScrollEnd($event)" [ngStyle]="{'height': settings.maxHeight+'px'}" class="lazyContainer">
                     <span *ngFor="let item of scroll3.viewPortItems; let i = index;">
-                        <li (click)="onItemClick(item,i,$event)" *ngIf="!item.grpTitle" [ngClass]="{'grp-title': item.grpTitle,'grp-item': !item.grpTitle && !settings.singleSelection}"
+                        <li (click)="onItemClick(item,i,$event)" *ngIf="!item.grpTitle" [ngClass]="{'locked-item': item[settings.enabledKey] === false, 'grp-title': item.grpTitle,'grp-item': !item.grpTitle && !settings.singleSelection}"
                             class="pure-checkbox">
-                            <input *ngIf="settings.showCheckbox && !settings.singleSelection" type="checkbox" [checked]="isSelected(item)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled"
+                            <input *ngIf="settings.showCheckbox && !settings.singleSelection && item[settings.enabledKey] === true" [ngClass]="{'hidden-element': item[settings.enabledKey] === false}" type="checkbox" [checked]="isSelected(item)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled || item[settings.enabledKey] === false"
                             />
                             <label></label>
                             <c-templateRenderer [data]="itemTempl" [item]="item"></c-templateRenderer>
                         </li>
                         <li *ngIf="item.grpTitle" [ngClass]="{'grp-title': item.grpTitle,'grp-item': !item.grpTitle && !settings.singleSelection}"
                             class="pure-checkbox">
-                            <input *ngIf="settings.showCheckbox" type="checkbox" [checked]="isSelected(item)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled"
+                            <input *ngIf="settings.showCheckbox" [ngClass]="{'hidden-element': item[settings.enabledKey] === false}" type="checkbox" [checked]="isSelected(item)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled || item[settings.enabledKey] === false"
                             />
                             <label></label>
                             <c-templateRenderer [data]="itemTempl" [item]="item"></c-templateRenderer>
@@ -190,14 +190,14 @@
                     <span *ngFor="let item of groupedData; let i = index;">
                         <li (click)="selectGroup(item)" [ngClass]="{'grp-title': item.grpTitle,'grp-item': !item.grpTitle && !settings.singleSelection}"
                             class="pure-checkbox">
-                            <input *ngIf="settings.showCheckbox && !settings.singleSelection" type="checkbox" [checked]="item.selected" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled"
+                            <input *ngIf="settings.showCheckbox && !settings.singleSelection && item[settings.enabledKey] === true" [ngClass]="{'hidden-element': item[settings.enabledKey] === false}" type="checkbox" [checked]="item.selected" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled || item[settings.enabledKey] === false"
                             />
                             <label>{{item[settings.labelKey]}}</label>
                             <ul class="lazyContainer">
                                 <span *ngFor="let val of item.list ; let j = index;">
-                                    <li (click)="onItemClick(val,j,$event); $event.stopPropagation()" [ngClass]="{'grp-title': val.grpTitle,'grp-item': !val.grpTitle && !settings.singleSelection}"
+                                    <li (click)="onItemClick(val,j,$event); $event.stopPropagation()"  [ngClass]="{'locked-item': item[settings.enabledKey] === true, 'grp-title': val.grpTitle,'grp-item': !val.grpTitle && !settings.singleSelection}"
                                         class="pure-checkbox">
-                                        <input *ngIf="settings.showCheckbox" type="checkbox" [checked]="isSelected(val)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(val)) || val.disabled"
+                                        <input *ngIf="settings.showCheckbox" [ngClass]="{'hidden-element': item[settings.enabledKey] === false}" type="checkbox" [checked]="isSelected(val)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(val)) || val.disabled"
                                         />
                                         <label></label>
                                         <c-templateRenderer [data]="itemTempl" [item]="val"></c-templateRenderer>
@@ -217,14 +217,14 @@
                         <span *ngFor="let item of scroll4.viewPortItems; let i = index;">
                             <li *ngIf="item.grpTitle" [ngClass]="{'grp-title': item.grpTitle,'grp-item': !item.grpTitle && !settings.singleSelection, 'selected-item': isSelected(item) == true }"
                                 class="pure-checkbox">
-                                <input *ngIf="settings.showCheckbox && !item.grpTitle && !settings.singleSelection" type="checkbox" [checked]="isSelected(item)"
-                                    [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled"
+                                <input *ngIf="settings.showCheckbox && !item.grpTitle && !settings.singleSelection && item[settings.enabledKey] === true" [ngClass]="{'hidden-element': item[settings.enabledKey] === false}" type="checkbox" [checked]="isSelected(item)"
+                                    [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled || item[settings.enabledKey] === false"
                                 />
                                 <label>{{item[settings.labelKey]}}</label>
                             </li>
-                            <li (click)="onItemClick(item,i,$event)" *ngIf="!item.grpTitle" [ngClass]="{'grp-title': item.grpTitle,'grp-item': !item.grpTitle && !settings.singleSelection, 'selected-item': isSelected(item) == true }"
+                            <li (click)="onItemClick(item,i,$event)" *ngIf="!item.grpTitle" [ngClass]="{'locked-item': item[settings.enabledKey] === false, 'grp-title': item.grpTitle,'grp-item': !item.grpTitle && !settings.singleSelection, 'selected-item': isSelected(item) == true }"
                                 class="pure-checkbox">
-                                <input *ngIf="settings.showCheckbox && !item.grpTitle" type="checkbox" [checked]="isSelected(item)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled"
+                                <input *ngIf="settings.showCheckbox && !item.grpTitle && item[settings.enabledKey] === true" [ngClass]="{'hidden-element': item[settings.enabledKey] === false}" type="checkbox" [checked]="isSelected(item)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled || item[settings.enabledKey] === false"
                                 />
                                 <label>{{item[settings.labelKey]}}</label>
                             </li>
@@ -238,14 +238,14 @@
                     <span *ngFor="let item of groupedData ; let i = index;">
                         <li (click)="selectGroup(item)" [ngClass]="{'grp-title': item.grpTitle,'grp-item': !item.grpTitle && !settings.singleSelection}"
                             class="pure-checkbox">
-                            <input *ngIf="settings.showCheckbox && !settings.singleSelection" type="checkbox" [checked]="item.selected" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled"
+                            <input *ngIf="settings.showCheckbox && !settings.singleSelection && item[settings.enabledKey] !== true" [ngClass]="{'hidden-element': item[settings.enabledKey] === true}" type="checkbox" [checked]="item.selected" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(item)) || item.disabled || item[settings.enabledKey] === false"
                             />
                             <label>{{item[settings.labelKey]}}</label>
                             <ul class="lazyContainer">
                                 <span *ngFor="let val of item.list ; let j = index;">
-                                    <li (click)="onItemClick(val,j,$event); $event.stopPropagation()" [ngClass]="{'selected-item': isSelected(val) == true,'grp-title': val.grpTitle,'grp-item': !val.grpTitle && !settings.singleSelection}"
+                                    <li (click)="onItemClick(val,j,$event); $event.stopPropagation()" [ngClass]="{'locked-item': item[settings.enabledKey] === true, 'selected-item': isSelected(val) == true,'grp-title': val.grpTitle,'grp-item': !val.grpTitle && !settings.singleSelection}"
                                         class="pure-checkbox">
-                                        <input *ngIf="settings.showCheckbox" type="checkbox" [checked]="isSelected(val)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(val)) || val.disabled"
+                                        <input *ngIf="settings.showCheckbox" [ngClass]="{'hidden-element': item[settings.enabledKey] === true}" type="checkbox" [checked]="isSelected(val)" [disabled]="(settings.limitSelection == selectedItems?.length && !isSelected(val)) || val.disabled"
                                         />
                                         <label>{{val[settings.labelKey]}}</label>
                                     </li>

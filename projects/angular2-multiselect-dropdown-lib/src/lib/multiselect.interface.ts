@@ -22,7 +22,8 @@ export interface DropdownSettings{
     lazyLoading?: boolean;
     labelKey?: string;
     primaryKey: string;
-    position:string;
+    enabledKey?: string;
+    position: string;
     loading?: boolean;
     selectGroup?: boolean;
     addNewItemOnFilter?: boolean;
@@ -30,4 +31,7 @@ export interface DropdownSettings{
     escapeToClose?: boolean;
     autoPosition?: boolean;
     clearAll?: boolean;
-} 
+    closeOnClickOutside: boolean;
+    hiddenCheckboxClass?: string;
+    lockItemClass?: string;
+}
